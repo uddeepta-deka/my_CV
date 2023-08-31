@@ -1,0 +1,9 @@
+image: blang/latex
+
+build:
+  script:
+    - cd paper
+    - latexmk -pdf
+  artifacts:
+    paths:
+      - "paper/paper.pdf"
