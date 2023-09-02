@@ -22,8 +22,16 @@ jobs:
         with:
           name: resume
           path: outdir/resume.pdf
+  release_latex:
+    runs-on: ubuntu-latest
+    needs: build_latex
+    steps:
+      - name: remove existing file
+        run: rm -f outdir/resume.pdf
       - name: Download PDF file
         uses: actions/download-artifact@v3
         with:
           name: resume
           path: outdir/resume.pdf
+      - name: Test artifact download
+	run: ls -R
