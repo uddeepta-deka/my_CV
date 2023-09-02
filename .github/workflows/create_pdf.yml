@@ -33,5 +33,3 @@ jobs:
         with:
           name: resume
           path: outdir/resume.pdf
-      - name: Test artifact download
-	run: ls -R
