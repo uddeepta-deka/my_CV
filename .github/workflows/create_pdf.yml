@@ -49,10 +49,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: release_pdf
     steps:
-      - name: commit and push
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: configure git
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
+      
+      - name: commit and push PDF
+        run: |
           mv resume.pdf .
           git add main.pdf
           git commit -m "Add built PDF"
