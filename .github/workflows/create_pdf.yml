@@ -1,34 +1,36 @@
-name: LateX to PDF
+name: LaTeX to PDF
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Replace with your repository's main branch name
 
 jobs:
   build:
-    name: Build project
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Set up Git repository
-        uses: actions/checkout@v3
+      - name: Setup LaTeX Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex
 
-      - name: Install texlive
-        run: sudo apt install texlive-base
+      - name: Build LaTeX Document
+        run: |
+          # Replace 'main.tex' with the name of your main LaTeX file
+          xelatex main.tex
+          bibtex main.aux  # Uncomment if you use BibTeX for citations
+          xelatex main.tex
+          xelatex main.tex
 
-      - name: Install texlive-latex-extra
-        run: sudo apt-get install texlive-latex-extra
-
-      - name: Build pdf
-        run: pdflatex -jobname resume main.tex
-
-      - name: Upload PDF artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: resume
-          path: resume.pdf
+          name: pdf-artifact
+          path: main.pdf  # Replace with the name of your main PDF file
 
   deploy:
     needs: build
@@ -41,7 +43,7 @@ jobs:
       - name: Download PDF Artifact
         uses: actions/download-artifact@v2
         with:
-          name: resume
+          name: pdf-artifact
 
       - name: Configure Git
         run: |
@@ -50,11 +52,11 @@ jobs:
 
       - name: Commit and Push PDF
         run: |
-          mv resume/resume.pdf .
-          git add resume.pdf
+          # Replace 'main.pdf' with the name of your main PDF file
+          mv pdf-artifact/main.pdf .
+          git add main.pdf
           git commit -m "Add built PDF"
           git push
-
 
 # name: LateX to PDF
 
