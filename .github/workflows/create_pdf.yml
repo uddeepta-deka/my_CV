@@ -11,27 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Set up Git repository
+        uses: actions/checkout@v3
 
-      - name: Setup LaTeX Environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y texlive-xetex
+      - name: Install texlive
+        run: sudo apt install texlive-base
 
-      - name: Build LaTeX Document
-        run: |
-          # Replace 'main.tex' with the name of your main LaTeX file
-          xelatex main.tex
-          bibtex main.aux  # Uncomment if you use BibTeX for citations
-          xelatex main.tex
-          xelatex main.tex
+      - name: Install texlive-latex-extra
+        run: sudo apt-get install texlive-latex-extra
+
+      - name: Build pdf
+        run: pdflatex main.tex
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v2
         with:
           name: pdf-artifact
-          path: main.pdf  # Replace with the name of your main PDF file
+          path: main.pdf  
 
   deploy:
     needs: build
@@ -53,7 +49,6 @@ jobs:
 
       - name: Commit and Push PDF
         run: |
-          # Replace 'main.pdf' with the name of your main PDF file
           mv pdf-artifact/main.pdf .
           git add main.pdf
           git commit -m "Add built PDF"
