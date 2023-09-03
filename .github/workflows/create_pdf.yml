@@ -1,27 +1,19 @@
 name: LateX to PDF
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-env:
-  RESUME_TARGET: out/main.pdf
-
 jobs:
-  build_and_release_pdf:
+  build_pdf:
+    name: Build project
     runs-on: ubuntu-latest
     steps:
 
       - name: Set up Git repository
         uses: actions/checkout@v3
-
-      # - name: Compile LaTeX document
-      #   uses: xu-cheng/latex-action@v3
-      #   with:
-      #     root_file: main.tex
 
       - name: Install texlive
         run: sudo apt install texlive-base
@@ -38,6 +30,19 @@ jobs:
           name: resume
           path: resume.pdf
 
+  release_pdf:
+    name: Release project
+    runs-on: ubuntu-latest
+    needs: build_pdf
+    steps:
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with: 
+          name: resume
+      
+      - name: Test artifact download
+        run: ls -R
       # - name: Set version as short sha
       #   run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
       
