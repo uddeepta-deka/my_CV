@@ -23,6 +23,12 @@ jobs:
         with:
           root_file: main.tex
 
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: main.pdf
+          
       - name: Set version as short sha
         run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
       
