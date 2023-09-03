@@ -50,16 +50,16 @@ jobs:
       - name: Check If Release Exists
         id: check_release
         run: |
-          TAG_NAME="v1.0.0"
+          TAG_NAME="v1.0.0"  # Replace with your fixed tag name
           RELEASE_ID=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" | jq -r '.id')
           if [ -n "$RELEASE_ID" ]; then
-            echo "::set-output name=release_exists::true"
+            echo "release_exists=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=release_exists::false"
+            echo "release_exists=false" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
       - name: Create or update GitHub Release
         id: create_or_update_release
         run: |
