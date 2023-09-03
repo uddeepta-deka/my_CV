@@ -18,41 +18,50 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v3
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: main.tex
+      # - name: Compile LaTeX document
+      #   uses: xu-cheng/latex-action@v3
+      #   with:
+      #     root_file: main.tex
+
+      - name: Install texlive
+        run: sudo apt install texlive-base
+
+      - name: Install texlive-latex-extra
+        run: sudo apt-get install texlive-latex-extra
+
+      - name: Build pdf
+        run: pdflatex main.tex -o resume.pdf
 
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
-          name: PDF
-          path: main.pdf
-          
-      - name: Set version as short sha
-        run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-      
-      - name: Get asset name
-        run: echo "RESUME_NAME=resume.pdf" >> $GITHUB_ENV
+          name: resume
+          path: resume.pdf
 
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.VERSION }}
-          release_name: Release ${{ env.VERSION }}
-          draft: false
-          prerelease: false
+      # - name: Set version as short sha
+      #   run: echo "VERSION=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+      
+      # - name: Get asset name
+      #   run: echo "RESUME_NAME=resume.pdf" >> $GITHUB_ENV
+
+      # - name: Create release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ env.VERSION }}
+      #     release_name: Release ${{ env.VERSION }}
+      #     draft: false
+      #     prerelease: false
         
-      - name: Upload pdf
-        id: upload-release-pdf
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.RESUME_TARGET }}
-          asset_name: ${{ env.RESUME_NAME }}
-          asset_content_type: application/pdf
+      # - name: Upload pdf
+      #   id: upload-release-pdf
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ${{ env.RESUME_TARGET }}
+      #     asset_name: ${{ env.RESUME_NAME }}
+      #     asset_content_type: application/pdf
