@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_pdf:
+  build:
     name: Build project
     runs-on: ubuntu-latest
     steps:
@@ -24,45 +24,103 @@ jobs:
       - name: Build pdf
         run: pdflatex -jobname resume main.tex
 
-      - name: Upload PDF file
+      - name: Upload PDF artifact
         uses: actions/upload-artifact@v3
         with:
           name: resume
           path: resume.pdf
 
-  release_pdf:
-    name: Release project
+  deploy:
+    needs: build
     runs-on: ubuntu-latest
-    needs: build_pdf
-    steps:
 
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with: 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Download PDF Artifact
+        uses: actions/download-artifact@v2
+        with:
           name: resume
-      
-      - name: Test artifact download
-        run: ls -R
-  
-  deploy_pdf:
-    name: Commit and push pdf
-    runs-on: ubuntu-latest
-    needs: release_pdf
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
-      - name: configure git
+      - name: Configure Git
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-      
-      - name: commit and push PDF
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Commit and Push PDF
         run: |
           mv resume/resume.pdf .
           git add resume.pdf
           git commit -m "Add built PDF"
-          git push 
+          git push
+
+
+# name: LateX to PDF
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+
+# jobs:
+#   build_pdf:
+#     name: Build project
+#     runs-on: ubuntu-latest
+#     steps:
+
+#       - name: Set up Git repository
+#         uses: actions/checkout@v3
+
+#       - name: Install texlive
+#         run: sudo apt install texlive-base
+
+#       - name: Install texlive-latex-extra
+#         run: sudo apt-get install texlive-latex-extra
+
+#       - name: Build pdf
+#         run: pdflatex -jobname resume main.tex
+
+#       - name: Upload PDF file
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: resume
+#           path: resume.pdf
+
+#   release_pdf:
+#     name: Release project
+#     runs-on: ubuntu-latest
+#     needs: build_pdf
+#     steps:
+
+#       - name: Download artifact
+#         uses: actions/download-artifact@v3
+#         with: 
+#           name: resume
+      
+#       - name: Test artifact download
+#         run: ls -R
+  
+#   deploy_pdf:
+#     name: Commit and push pdf
+#     runs-on: ubuntu-latest
+#     needs: release_pdf
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: configure git
+#         run: |
+#           git config --local user.email "actions@github.com"
+#           git config --local user.name "GitHub Actions"
+      
+#       - name: commit and push PDF
+#         run: |
+#           mv resume/resume.pdf .
+#           git add resume.pdf
+#           git commit -m "Add built PDF"
+#           git push 
   # deploy_pdf:
   #   name: Commit to repository
   #   runs-on: ubuntu-latest
