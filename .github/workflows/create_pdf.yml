@@ -53,7 +53,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # TAG_NAME="v1.0.0"
-          TAG_NAME: ${{ env.VERSION }}
+          TAG_NAME="${{ env.VERSION }}"
           RELEASE_EXISTS="${{ steps.check_release.outputs.release_exists }}"
           if [ "$RELEASE_EXISTS" == "true" ]; then
             curl -X PATCH "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d "{\"tag_name\":\"$TAG_NAME\"}"
@@ -68,7 +68,7 @@ jobs:
         run: |
           PDF_PATH="resume.pdf"
           # TAG_NAME="v1.0.0"
-          TAG_NAME: ${{ env.VERSION }}
+          TAG_NAME="${{ env.VERSION }}"
           RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
           UPLOAD_URL=$(curl -X GET "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME" -H "Authorization: token $RELEASE_TOKEN" | jq -r '.upload_url' | sed -e 's/{.*}//')
           curl -X POST "$UPLOAD_URL?name=$PDF_PATH" -H "Authorization: token $RELEASE_TOKEN" -H "Content-Type: application/pdf" --data-binary "@$PDF_PATH"
