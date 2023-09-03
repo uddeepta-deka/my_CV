@@ -55,4 +55,4 @@ jobs:
         with:
           files: |
             resume.pdf
-          tag_name: "v.new"
+          tag_name: v.new
