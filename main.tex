@@ -1,0 +1,70 @@
+\documentclass[margin,line]{res}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,      
+    urlcolor=purple,
+    }
+\usepackage{enumitem}
+\usepackage{url}
+\oddsidemargin -.5in
+\evensidemargin -.5in
+\textwidth=6.0in
+\itemsep=0in
+\parsep=0in
+\topmargin=0in
+\topskip=0in
+\newenvironment{list1}{
+  \begin{list}{\ding{113}}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in}
+      \setlength{\leftmargin}{0.17in}}}{\end{list}}
+\newenvironment{list2}{
+  \begin{list}{$\bullet$}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in}
+      \setlength{\leftmargin}{0.2in}}}{\end{list}}
+
+
+    
+\begin{document}
+
+\centerline{\Large CURRICULUM VITAE}
+
+\name{\LARGE \sc{Uddeepta Deka}} %\hfill {\em \today}
+
+\begin{resume}
+\section{\sc Contact Information}
+    \input{sections/contact}
+\section{\sc Research Interests}
+    \input{sections/research_interests}
+\section{\sc Education}
+    \input{sections/edu}
+\section{\sc Pre-Ph.D. Research Experience}
+    \input{sections/pre-phd}
+\section{\sc Publications}
+    \input{sections/publications}
+\section{\sc Awards and Fellowships}
+    \input{sections/awards_fellowships}
+\section{\sc Other Achievements}
+    \input{sections/other_achievements}
+\section{\sc Teaching Experience}
+    \input{sections/teaching_experience}
+\section{\sc Workshops and Research Schools Attended}
+    \input{sections/workshops_schools_attended}
+\section{\sc Talks in Conferences}
+    \input{sections/talks_conferences}
+\section{\sc Invited talks}
+    \input{sections/invited_talks}
+\section{\sc Technical Skills}
+    \input{sections/technical_skills}
+\section{\sc Extra-Curricular Activities}
+    \input{sections/extra_curricular}
+\section{\sc Hobbies and Interests}
+    \input{sections/hobbies}
+\end{resume}
+\end{document}
