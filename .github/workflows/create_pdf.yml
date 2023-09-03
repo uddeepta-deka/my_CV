@@ -59,8 +59,8 @@ jobs:
       
       - name: commit and push PDF
         run: |
-          mv resume.pdf .
-          git add main.pdf
+          mv resume/resume.pdf .
+          git add resume.pdf
           git commit -m "Add built PDF"
           git push 
   # deploy_pdf:
