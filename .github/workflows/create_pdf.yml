@@ -42,17 +42,25 @@ jobs:
         with:
           name: pdf-artifact
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            main.pdf
 
-      - name: Commit and Push PDF
-        run: |
-          mv pdf-artifact/main.pdf .
-          git add main.pdf
-          git commit -m "Add built PDF"
-          git push
+      - name: Upload PDF Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./main.pdf
+          asset_name: main.pdf
+          asset_content_type: application/pdf
 
 # name: LateX to PDF
 
