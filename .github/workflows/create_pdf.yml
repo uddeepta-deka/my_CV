@@ -1,9 +1,10 @@
-name: LaTeX to PDF
+name: LateX to PDF
 
 on:
   push:
-    branches:
-      - main  # Replace with your repository's main branch name
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
