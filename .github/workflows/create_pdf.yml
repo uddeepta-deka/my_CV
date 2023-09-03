@@ -47,30 +47,12 @@ jobs:
       - name: Test artifact download
         run: ls -R
 
-      - name: Generate Version
-        id: generate_version
-        run: |
-          VERSION="v.$(date +'%Y%m%d%H%M')"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      - name: Create or Update GitHub Release
+        id: create_or_update_release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Create GitHub Release
-        id: create_release
-        run: |
-          TAG_NAME="${{ env.VERSION }}"
-          RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
-          curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $RELEASE_TOKEN" -d "{\"tag_name\":\"$TAG_NAME\"}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload PDF Asset
-        id: upload-release-asset
-        run: |
-          PDF_PATH="resume.pdf"
-          TAG_NAME="${{ env.VERSION }}"
-          RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
-          UPLOAD_URL=$(curl -X GET "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME" -H "Authorization: token $RELEASE_TOKEN" | jq -r '.upload_url' | sed -e 's/{.*}//')
-          curl -X POST "$UPLOAD_URL?name=$PDF_PATH" -H "Authorization: token $RELEASE_TOKEN" -H "Content-Type: application/pdf" --data-binary "@$PDF_PATH"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            resume.pdf
+          tag_name: "v1.0"
