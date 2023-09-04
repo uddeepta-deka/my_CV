@@ -50,7 +50,8 @@ jobs:
       - name: Generate Version
         id: generate_version
         run: |
-          VERSION="v.$(date +'%Y%m%d%H%M')"
+          # VERSION="v.$(date +'%Y%m%d%H%M')"
+          VERSION="v.${{ github.run_id }}.${{ github.run_number }}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
