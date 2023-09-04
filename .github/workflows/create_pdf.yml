@@ -49,10 +49,32 @@ jobs:
 
       - name: Create or Update GitHub Release
         id: create_or_update_release
-        uses: softprops/action-gh-release@v1
+        run: |
+          # Set your GitHub username
+          GITHUB_USER="uddeepta.deka"
+          # Set your GitHub repository name
+          REPO_NAME="my_CV"
+          # Set your static tag name
+          TAG_NAME="v.1.0"
+
+          # Check if the release already exists
+          RELEASE_ID=$(curl -s -X GET "https://api.github.com/repos/$GITHUB_USER/$REPO_NAME/releases/tags/$TAG_NAME" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" | jq -r '.id')
+
+          if [ -n "$RELEASE_ID" ]; then
+            # Update the release by uploading assets
+            RELEASE_URL=$(curl -s -X GET "https://api.github.com/repos/$GITHUB_USER/$REPO_NAME/releases/$RELEASE_ID" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" | jq -r '.upload_url')
+            RELEASE_URL=${RELEASE_URL%\{*}
+
+            # Upload the PDF artifact
+            curl -X POST "$RELEASE_URL?name=main.pdf" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/pdf" --data-binary "@main.pdf"
+          else
+            # Create a new release and upload the PDF artifact
+            RELEASE_BODY="Release for $TAG_NAME"
+            RELEASE_ID=$(curl -s -X POST "https://api.github.com/repos/$GITHUB_USER/$REPO_NAME/releases" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d "{\"tag_name\":\"$TAG_NAME\",\"name\":\"$TAG_NAME\",\"body\":\"$RELEASE_BODY\"}" | jq -r '.id')
+
+            # Upload the PDF artifact
+            RELEASE_URL="https://uploads.github.com/repos/$GITHUB_USER/$REPO_NAME/releases/$RELEASE_ID/assets?name=main.pdf"
+            curl -X POST "$RELEASE_URL" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/pdf" --data-binary "@main.pdf"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            resume.pdf
-          tag_name: "v1.0"
