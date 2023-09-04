@@ -52,11 +52,6 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            resume.pdf  # Adjust this to your PDF file name
-        tag_name: v1  # Static version number
-        release_name: Release v1  # You can customize the release name
 
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
