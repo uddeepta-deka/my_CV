@@ -51,7 +51,7 @@ jobs:
         id: create_or_update_release
         run: |
           # Set your GitHub username
-          GITHUB_USER="uddeepta.deka"
+          GITHUB_USER="uddeepta-deka"
           # Set your GitHub repository name
           REPO_NAME="my_CV"
           # Set your static tag name
