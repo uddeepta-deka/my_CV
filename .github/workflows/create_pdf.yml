@@ -86,10 +86,10 @@ jobs:
           asset_path: ./resume.pdf
           asset_name: resume.pdf  # Adjust this to your PDF file name
           asset_content_type: application/pdf
-        run: |
-          TAG_NAME="${{ env.VERSION }}"
-          RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
-          curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $RELEASE_TOKEN" -d "{\"tag_name\":\"$TAG_NAME\"}"
+        # run: |
+        #   TAG_NAME="${{ env.VERSION }}"
+        #   RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
+        #   curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $RELEASE_TOKEN" -d "{\"tag_name\":\"$TAG_NAME\"}"
         
 
       - name: Upload PDF Asset
