@@ -47,14 +47,14 @@ jobs:
       - name: Test artifact download
         run: ls -R
 
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: v1
-      #     release_name: Release v1
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1
+          release_name: Release v1
 
       # - name: Upload Release Assets
       #   uses: actions/upload-release-asset@v1
@@ -76,16 +76,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./resume.pdf
-          asset_name: resume.pdf  # Adjust this to your PDF file name
-          asset_content_type: application/pdf
+      # - name: Create GitHub Release
+      #   id: create_release
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./resume.pdf
+      #     asset_name: resume.pdf  # Adjust this to your PDF file name
+      #     asset_content_type: application/pdf
         # run: |
         #   TAG_NAME="${{ env.VERSION }}"
         #   RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
