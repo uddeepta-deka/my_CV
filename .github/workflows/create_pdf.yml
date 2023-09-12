@@ -47,58 +47,58 @@ jobs:
       - name: Test artifact download
         run: ls -R
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1
-          release_name: Release v1
-
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./resume.pdf  # Adjust this to your PDF file name
-          asset_name: resume.pdf  # Adjust this to your PDF file name
-          asset_content_type: application/pdf
-
-      # - name: Generate Version
-      #   id: generate_version
-      #   run: |
-      #     # VERSION="v.$(date +'%Y%m%d%H%M')"
-      #     # VERSION="v.${{ github.run_id }}.${{ github.run_number }}"
-      #     VERSION="latest"
-      #     echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      # - name: Create GitHub Release
-      #   id: create_release
+      #   with:
+      #     tag_name: v1
+      #     release_name: Release v1
+
+      # - name: Upload Release Assets
       #   uses: actions/upload-release-asset@v1
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   with:
       #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./resume.pdf
+      #     asset_path: ./resume.pdf  # Adjust this to your PDF file name
       #     asset_name: resume.pdf  # Adjust this to your PDF file name
       #     asset_content_type: application/pdf
-      #   # run: |
-      #   #   TAG_NAME="${{ env.VERSION }}"
-      #   #   RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
-      #   #   curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $RELEASE_TOKEN" -d "{\"tag_name\":\"$TAG_NAME\"}"
+
+      - name: Generate Version
+        id: generate_version
+        run: |
+          # VERSION="v.$(date +'%Y%m%d%H%M')"
+          # VERSION="v.${{ github.run_id }}.${{ github.run_number }}"
+          VERSION="latest"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./resume.pdf
+          asset_name: resume.pdf  # Adjust this to your PDF file name
+          asset_content_type: application/pdf
+        run: |
+          TAG_NAME="${{ env.VERSION }}"
+          RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
+          curl -X POST "https://api.github.com/repos/${{ github.repository }}/releases" -H "Authorization: token $RELEASE_TOKEN" -d "{\"tag_name\":\"$TAG_NAME\"}"
         
 
-      # # - name: Upload PDF Asset
-      # #   id: upload-release-asset
-      # #   run: |
-      # #     PDF_PATH="resume.pdf"
-      # #     TAG_NAME="${{ env.VERSION }}"
-      # #     RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
-      # #     UPLOAD_URL=$(curl -X GET "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME" -H "Authorization: token $RELEASE_TOKEN" | jq -r '.upload_url' | sed -e 's/{.*}//')
-      # #     curl -X POST "$UPLOAD_URL?name=$PDF_PATH" -H "Authorization: token $RELEASE_TOKEN" -H "Content-Type: application/pdf" --data-binary "@$PDF_PATH"
-      # #   env:
-      # #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload PDF Asset
+        id: upload-release-asset
+        run: |
+          PDF_PATH="resume.pdf"
+          TAG_NAME="${{ env.VERSION }}"
+          RELEASE_TOKEN="${{ secrets.RELEASE_TOKEN }}"
+          UPLOAD_URL=$(curl -X GET "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME" -H "Authorization: token $RELEASE_TOKEN" | jq -r '.upload_url' | sed -e 's/{.*}//')
+          curl -X POST "$UPLOAD_URL?name=$PDF_PATH" -H "Authorization: token $RELEASE_TOKEN" -H "Content-Type: application/pdf" --data-binary "@$PDF_PATH"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
