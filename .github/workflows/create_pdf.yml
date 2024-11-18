@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install texlive
-        run: sudo apt-get update -y && sudo apt-get install -y texlive texlive-latex-extra
+        run: sudo apt-get update -y && sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-extra
 
       - name: Build pdf
         run: pdflatex -jobname resume main.tex
