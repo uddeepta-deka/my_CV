@@ -1,5 +1,5 @@
 \documentclass[margin,line]{res}
-
+\usepackage{amsmath}
 \usepackage{fontawesome5}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -7,13 +7,14 @@
     colorlinks=true,
     linkcolor=blue,
     citecolor=blue,      
-    urlcolor=purple,
+    urlcolor=teal,
     }
 \usepackage{enumitem}
 \usepackage{url}
 \oddsidemargin -.5in
 \evensidemargin -.5in
 \textwidth=6.0in
+\textheight=9.5in
 \itemsep=0in
 \parsep=0in
 \topmargin=0in
@@ -30,7 +31,7 @@
       \setlength{\parsep}{0in} \setlength{\parskip}{0in}
       \setlength{\topsep}{0in} \setlength{\partopsep}{0in}
       \setlength{\leftmargin}{0.2in}}}{\end{list}}
-
+\newcommand{\pipe}{\textbar\;}
 
     
 \begin{document}
@@ -47,28 +48,31 @@
     \input{sections/research_interests}
 \section{\sc Education}
     \input{sections/edu}
+\section{\sc Research Experience}
+    \input{sections/experience.tex}
 \section{\sc Publications}
     \input{sections/publications}
 \section{\sc Awards and Fellowships}
     \input{sections/awards_fellowships}
-\section{\sc Teaching and Mentorship Experience}
-    \input{sections/teaching_experience}
 % \section{\sc Past Research Experience}
 %     \input{sections/pre-phd}
-\section{\sc Selected Colloquia, Seminars, Talks and Posters}
+\section{\sc Selected Seminars, Talks and Posters}
     \input{sections/talks_conferences}
+
+\section{\sc Teaching and Mentorship Experience}
+    \input{sections/teaching_experience}
 % \section{\sc Participation in Workshops and Conferences}
 %     \input{sections/workshops_conferences_attended}
 % \section{\sc Academic visits}
 %     \input{sections/academic_visits}
-\section{\sc Memberships}
-    \input{sections/membership}
-\section{\sc Technical Skills}
-    \input{sections/technical_skills}
-\section{\sc Leadership Roles and Extra-Curricular Activities}
-    \input{sections/extra_curricular}
-\section{\sc Other Achievements}
-    \input{sections/other_achievements}
+% \section{\sc Memberships}
+%     \input{sections/membership}
+\section{\sc Skills and specialization}
+    \input{sections/skills}
+% \section{\sc Leadership Roles and Extra-Curricular Activities}
+%     \input{sections/extra_curricular}
+% \section{\sc Other Achievements}
+%     \input{sections/other_achievements}
 % \section{\sc Hobbies and Interests}
 %     \input{sections/hobbies}
 \end{resume}
