@@ -10,3 +10,7 @@ To generate your own CV
 - Generate a [Personal Access Token](https://docs.github.com/en/enterprise-server@3.6/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with at least `repo` scope.
 - Copy the Token to a [new repository secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) and name it `RELEASE_TOKEN`.
 - Commit your changes.
+
+Adding publications:
+- add your publications in publications.bib
+- run `python generate_publications_tex.py` to generate the publications.tex file.
