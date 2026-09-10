@@ -12,6 +12,18 @@
     }
 \usepackage{enumitem}
 \usepackage{url}
+\usepackage[
+    backend=bibtex,
+    style=numeric,
+    sorting=ydnt,
+    giveninits=true,
+    maxbibnames=99,
+    defernumbers=true,
+    doi=false,
+    url=false,
+    isbn=false
+]{biblatex}
+\addbibresource{sections/publications.bib}
 \oddsidemargin -.5in
 \evensidemargin -.5in
 \textwidth=6.0in
@@ -34,13 +46,79 @@
       \setlength{\leftmargin}{0.2in}}}{\end{list}}
 \newcommand{\pipe}{\textbar\;}
 
+% Publication formatting. Content comes only from sections/publications.bib.
+\newcommand{\boldcvname}[1]{%
+  \ifboolexpr{test {\ifdefstring{\namepartfamily}{Deka}}}
+    {\mkbibbold{#1}}
+    {#1}%
+}
+\renewcommand*{\mkbibnamegiven}[1]{\boldcvname{#1}}
+\renewcommand*{\mkbibnamefamily}[1]{\boldcvname{#1}}
+\renewcommand*{\finalnamedelim}{\addcomma\space}
+
+\defbibenvironment{cvpublications}
+  {\begin{itemize}[noitemsep]}
+  {\end{itemize}}
+  {\item}
+
+\DeclareFieldFormat[article]{title}{\mkbibitalic{#1}}
+\DeclareFieldFormat{journaltitle}{#1}
+\DeclareFieldFormat{pages}{#1}
+\DeclareFieldFormat{eprint}{#1}
+\renewcommand*{\finentrypunct}{}
+
+\newbibmacro*{cv:journal}{%
+  \iffieldundef{journaltitle}
+    {}
+    {\iffieldundef{doi}
+       {\printfield{journaltitle}%
+        \setunit*{\addspace}%
+        \printfield{volume}%
+        \setunit{\addcomma\space}%
+        \printfield{pages}}
+       {\href{https://doi.org/\thefield{doi}}{%
+          \printfield{journaltitle}%
+          \setunit*{\addspace}%
+          \printfield{volume}%
+          \setunit{\addcomma\space}%
+          \printfield{pages}}}}}
+
+\newbibmacro*{cv:eprint}{%
+  \iffieldundef{eprint}
+    {}
+    {\href{https://arxiv.org/abs/\thefield{eprint}}{arXiv:\printfield{eprint}}}}
+
+\newbibmacro*{cv:year}{%
+  \unskip\nobreak\hfill\penalty50
+  \hskip2em\hbox{}\nobreak\hfill
+  \printfield{year}%
+  \parfillskip=0pt
+  \finalhyphendemerits=0}
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \ifkeyword{long-author}
+    {\setunit{\addspace}\printtext{\mkbibparens{incl. \mkbibbold{U. Deka}}}}
+    {}%
+  \setunit{\addcomma\space}%
+  \printfield{title}%
+  \iffieldundef{journaltitle}
+    {}
+    {\addcomma\space\usebibmacro{cv:journal}}%
+  \iffieldundef{eprint}
+    {}
+    {\addcomma\space\usebibmacro{cv:eprint}}%
+  \addperiod
+  \usebibmacro{cv:year}%
+  \usebibmacro{finentry}}
+
     
 \begin{document}
 
 \centerline{\LARGE \sc{Uddeepta Deka}\orcidlink{0000-0002-5942-4487}}
 \bigskip
-
-% \name{\LARGE \sc{Uddeepta Deka}} %\hfill {\em \today}
 
 \begin{resume}
 \section{\sc Contact Information}
@@ -53,26 +131,14 @@
     \input{sections/employment.tex}
 \section{\sc Awards and Fellowships}
     \input{sections/awards_fellowships}
-% \section{\sc Past Research Experience}
-%     \input{sections/pre-phd}
 \section{\sc Selected Seminars, Colloquia and Posters}
     \input{sections/talks_conferences}
 \section{\sc Teaching and Mentorship Experience}
     \input{sections/teaching_experience}
-% \section{\sc Participation in Workshops and Conferences}
-%     \input{sections/workshops_conferences_attended}
-% \section{\sc Academic visits}
-%     \input{sections/academic_visits}
 \section{\sc Professional Memberships}
     \input{sections/membership}
 \section{\sc Skills and specialization}
     \input{sections/skills}
-% \section{\sc Leadership Roles and Extra-Curricular Activities}
-%     \input{sections/extra_curricular}
-% \section{\sc Other Achievements}
-%     \input{sections/other_achievements}
-% \section{\sc Hobbies and Interests}
-%     \input{sections/hobbies}
 \end{resume}
 \clearpage
 \section{\sc Publications}

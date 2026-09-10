@@ -21,9 +21,6 @@
 \ExecuteOptions{overlapped,centered}
 \ProcessOptions\relax
 
-\nofiles
-
-
 \newtoks\tabular@text		    
 \newtoks\tabular@head		    
 \newtoks\tabular@tail
