@@ -99,6 +99,9 @@
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \printnames{author}%
+  \ifkeyword{long-author}
+    {\setunit{\addspace}\printtext{\mkbibparens{incl. Deka U.}}}
+    {}%
   \setunit{\addcomma\space}%
   \printfield{title}%
   \iffieldundef{journaltitle}

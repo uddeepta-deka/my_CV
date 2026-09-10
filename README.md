@@ -11,6 +11,7 @@ The CV is built by [GitHub Actions](https://github.com/features/actions), and th
 - Edit only `sections/publications.bib` to add or update publications.
 - Mark a collaboration or other long-author paper with `keywords = "long-author"` in its BibTeX entry. Those papers are placed in their own list automatically.
 - Author names matching `Deka, Uddeepta` are bolded automatically.
+- Publications are sorted in reverse chronological order.
 
 ## Build locally
 
